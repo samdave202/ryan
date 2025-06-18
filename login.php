@@ -108,9 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="password">Password:</label>
                 <input type="password" name="password" id="password" required autocomplete="current-password">
             </div>
-           <a href="login.php">
-             <button type="submit">Login</button>
-           </a>
+            <button type="submit">Login</button>
         </form>
     </div>
 </body>
